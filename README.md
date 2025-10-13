@@ -1,63 +1,63 @@
 # Python Traffic Counter
 
-The purpose of this project is to detect and track vehicles on a video stream and count those going through a defined line. 
+Vehicle detection and tracking system using YOLOv11x and BoTSORT for counting objects crossing a defined line.
 
 ![highway.gif](highway.gif)
 
-## Updated for 2025
-This project has been updated to use:
+## Features
 
-* **YOLOv11x** from [Ultralytics](https://github.com/ultralytics/ultralytics) for state-of-the-art object detection
-* **BoTSORT** tracking algorithm for improved multi-object tracking with appearance-based association
-* **Python 3.11** compatibility
-* **Improved performance** and accuracy
+* **YOLOv11x** - State-of-the-art object detection
+* **BoTSORT** - Advanced multi-object tracking with appearance-based re-identification  
+* **COCO Classes** - Support for 80 object classes with flexible filtering
+* **Python 3.11** - Modern Python compatibility
 
-It uses:
-* **YOLOv11x** for object detection on each video frame (automatically downloads model)
-* **BoTSORT** algorithm to track objects over different frames with appearance-based re-identification
+## Installation
 
-**BoTSORT Advantages over SORT:**
-- Better handling of occlusions
-- Appearance-based re-identification 
-- Improved long-term tracking
-- Reduced identity switches
-- Better performance in crowded scenes
+1. Install Python 3.11
+2. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+Or run: `install.bat` (Windows)
 
-Once the objects are detected and tracked over different frames, a simple mathematical calculation is applied to count the intersections between the vehicles' previous and current frame positions with a defined line.
+## Usage
+
+### Basic (vehicles only):
+```bash
+python main.py --input input/highway.mp4 --output output/highway.mp4
+```
+
+### With class selection:
+```bash
+# People and vehicles (shows as "5 car", "12 person", etc.)
+python main.py --input input/video.mp4 --output output/result.mp4 --classes people_and_vehicles
+
+# All transportation with detailed IDs (shows as "ID:5 car", "ID:12 person", etc.)
+python main.py --input input/video.mp4 --output output/result.mp4 --classes transportation --show-labels
+
+# All 80 COCO classes with detailed format
+python main.py --input input/video.mp4 --output output/result.mp4 --classes all --show-labels
+```
+
+### Parameters:
+- `--input`: Input video path
+- `--output`: Output video path  
+- `--confidence`: Detection confidence (default: 0.5)
+- `--threshold`: NMS threshold (default: 0.3)
+- `--classes`: Object categories to detect
+  - `vehicles`: Cars, trucks, motorcycles, buses, bicycles, trains
+  - `people`: People only
+  - `people_and_vehicles`: People and all vehicles
+  - `transportation`: All transportation (vehicles, planes, boats)
+  - `traffic`: Traffic infrastructure (lights, signs, meters)
+  - `all`: All 80 COCO classes
+- `--show-labels`: Show detailed format "ID:X class_name" instead of "X class_name"
 
 ## Requirements
 
 - Python 3.11
-- Dependencies listed in `requirements.txt`
-
-## Installation
-
-1. Clone or download this repository
-2. Install Python 3.11
-3. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
-
-## Usage
-
-The updated version automatically downloads the YOLOv11x model on first run:
-
-```bash
-python main.py --input input/highway.mp4 --output output/highway.mp4 --confidence 0.5 --threshold 0.3
-```
-
-### Parameters:
-- `--input`: Path to input video file
-- `--output`: Path to output video file  
-- `--confidence`: Minimum confidence threshold for detections (default: 0.5)
-- `--threshold`: IoU threshold for non-maximum suppression (default: 0.3)
-
-## Quick Start with Windows
-
-Run the installation script:
-```bash
-install.bat
+- YOLOv11x model (auto-downloaded)
+- See `requirements.txt` for dependencies
 ```
 
 ## Citation

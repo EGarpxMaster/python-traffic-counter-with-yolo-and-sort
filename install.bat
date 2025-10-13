@@ -1,5 +1,5 @@
 @echo off
-echo Installing Python Traffic Counter dependencies for YOLOv11x with BoTSORT...
+echo Installing Python Traffic Counter with YOLOv11x and BoTSORT...
 echo.
 
 echo Checking Python version...
@@ -13,10 +13,15 @@ pip install -r requirements.txt
 echo.
 echo Installation complete!
 echo.
-echo To run the updated version with YOLOv11x and BoTSORT tracking:
-echo python main.py --input input/highway.mp4 --output output/highway.mp4 --confidence 0.5 --threshold 0.3
+echo Basic usage:
+echo python main.py --input input/highway.mp4 --output output/highway.mp4
 echo.
-echo The YOLOv11x model and BoTSORT tracker will be automatically downloaded on first run.
-echo BoTSORT provides improved tracking with appearance-based re-identification.
+echo With class selection:
+echo python main.py --input input/video.mp4 --output output/result.mp4 --classes people_and_vehicles
+echo.
+echo Note: Class names are now always shown (e.g., "5 car", "12 person")
+echo Use --show-labels for detailed format (e.g., "ID:5 car", "ID:12 person")
+echo.
+echo Available classes: vehicles, people, people_and_vehicles, transportation, traffic, all
 echo.
 pause
