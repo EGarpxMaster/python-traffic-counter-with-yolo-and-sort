@@ -1,0 +1,15 @@
+# Updated requirements for YOLOv11x with BoTSORT and Python 3.11
+ultralytics>=8.0.0
+opencv-python>=4.8.0
+numpy>=1.24.0
+scipy>=1.11.0
+scikit-learn>=1.3.0
+filterpy>=1.4.5
+numba>=0.58.0
+Pillow>=10.0.0
+matplotlib>=3.7.0
+torch>=2.0.0
+torchvision>=0.15.0
+# Additional for BoTSORT
+lap>=0.4.0
+cython_bbox>=0.1.3
