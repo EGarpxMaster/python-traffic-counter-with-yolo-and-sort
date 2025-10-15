@@ -27,7 +27,12 @@ for f in files:
 # Global variables
 memory = {}
 line = [(43, 543), (550, 655)]
+# Total counter (all objects)
 counter = 0
+# Per-class counters
+class_counts = {}
+# Keep track of which track IDs have been counted to avoid double counting
+counted_ids = set()
 
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
@@ -147,7 +152,15 @@ while True:
 				cv2.line(frame, p0, p1, color, 3)
 
 				if intersect(p0, p1, line[0], line[1]):
-					counter += 1
+					# Only count this track ID once when it crosses the line
+					if indexIDs[i] not in counted_ids:
+						counter += 1
+						counted_ids.add(indexIDs[i])
+						# increment per-class counter
+						cls_name = get_class_name(classIDs[i])
+						if cls_name not in class_counts:
+							class_counts[cls_name] = 0
+						class_counts[cls_name] += 1
 
 			# Draw object ID and class label (always show class name)
 			class_name = get_class_name(classIDs[i])
@@ -161,8 +174,15 @@ while True:
 	# draw counting line
 	cv2.line(frame, line[0], line[1], (0, 255, 255), 5)
 
-	# draw counter
+	# draw total counter
 	cv2.putText(frame, str(counter), (100, 200), cv2.FONT_HERSHEY_DUPLEX, 5.0, (0, 255, 255), 10)
+
+	# draw per-class totals on top-left corner
+	start_y = 30
+	for cls_name, cnt in class_counts.items():
+		text = f"{cls_name}: {cnt}"
+		cv2.putText(frame, text, (10, start_y), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2)
+		start_y += 30
 
 	# saves image file
 	cv2.imwrite("output/frame-{}.png".format(frameIndex), frame)
@@ -200,3 +220,14 @@ print("[INFO] cleaning up...")
 if writer is not None:
 	writer.release()
 vs.release()
+
+# Save counts to output/counts.txt
+try:
+	os.makedirs('output', exist_ok=True)
+	with open('output/counts.txt', 'w', encoding='utf-8') as f:
+		f.write(f"total:{counter}\n")
+		for cls_name, cnt in class_counts.items():
+			f.write(f"{cls_name}:{cnt}\n")
+	print('[INFO] Saved counts to output/counts.txt')
+except Exception as e:
+	print(f"[WARN] Could not save counts: {e}")
