@@ -22,6 +22,17 @@ Or run: `install.bat` (Windows)
 
 ## Usage
 
+### Interactive Line Setup
+
+Al ejecutar el script, se mostrará el primer frame del video donde puedes:
+
+1. **Dibujar líneas de conteo**: Haz clic en dos puntos para crear cada línea
+2. **Múltiples líneas**: Puedes agregar tantas líneas como necesites para diferentes direcciones
+3. **Deshacer**: Presiona 'u' para eliminar la última línea
+4. **Reiniciar**: Presiona 'r' para borrar todas las líneas
+5. **Confirmar**: Presiona ENTER cuando termines
+6. **Cancelar**: Presiona 'q' o ESC para salir
+
 ### Basic (vehicles only):
 ```bash
 python main.py --input input/highway.mp4 --output output/highway.mp4
@@ -38,6 +49,17 @@ python main.py --input input/video.mp4 --output output/result.mp4 --classes tran
 # All 80 COCO classes with detailed format
 python main.py --input input/video.mp4 --output output/result.mp4 --classes all --show-labels
 ```
+
+### Output
+
+El sistema genera:
+- Video procesado con todas las líneas de conteo visibles
+- Conteos en tiempo real por línea y por clase en el video
+- Archivo `output/counts.txt` con estadísticas detalladas:
+  - Total general de objetos contados
+  - Totales por clase (car, truck, bus, etc.)
+  - Totales por línea individual
+  - Desglose de clases por cada línea
 
 ### Parameters:
 - `--input`: Input video path
